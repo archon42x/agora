@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/archon42x/agora/auth/handler"
 	"github.com/archon42x/agora/common/jwt"
 	"github.com/gin-gonic/gin"
@@ -14,5 +16,9 @@ func main() {
 	protected := r.Group("/", jwt.AuthMiddleware())
 	protected.GET("/username", handler.UsernameHandler)
 
-	r.Run()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "10000"
+	}
+	r.Run(":" + port)
 }
